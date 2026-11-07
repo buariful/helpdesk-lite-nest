@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, UseGuards } from '@nestjs/common';
 import { TicketsService } from './tickets.service.js';
 import { Ticket } from './ticket.interface.js';
 import { CreateTicketDto } from './dto/create-ticket.dto.js';
+import { StaffGuard } from './guards/staff.guard.js';
 
 @Controller('tickets')
 export class TicketsController {
@@ -21,6 +22,7 @@ export class TicketsController {
         return this.ticketService.findOne(id)
     };
 
+    @UseGuards(StaffGuard)
     @Post()
     create(@Body() payload:CreateTicketDto){
         return this.ticketService.create(payload)
